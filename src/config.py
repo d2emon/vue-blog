@@ -4,12 +4,7 @@ from datetime import timedelta
 import locale
 
 
-# BASE_DIR = os.path.abspath(os.path.dirname(__file__))
 BASE_DIR = os.path.abspath(os.getcwd())
-# if getattr(sys, 'frozen', False):
-#     BASE_DIR = os.path.dirname(sys.executable)
-# else:
-#     BASE_DIR = os.path.dirname(__file__)
 
 try:
     locale.setlocale(locale.LC_ALL, 'russian')
@@ -32,14 +27,15 @@ class Config(object):
         "FORMAT": "%(asctime)s[%(levelname)s]:\t%(message)s\tin %(module)s at %(lineno)d",
     }
 
-    BACKUP_TIME = timedelta(minutes=30)
     DB_PATH = os.path.join(BASE_DIR, "db")
-    BACKUP_PATH = os.path.join(BASE_DIR, "db", "backup")
-    DB_FILENAME = "execom.db"
-    BACKUP_FILENAME = "execom-%s.db"
-    # SQLALCHEMY_DATABASE_URI = "sqlite:////%s/%s" % (DB_PATH, DB_FILENAME)
+    DB_FILENAME = "blog.db"
+    SQLALCHEMY_DATABASE_URI = "sqlite:////%s/%s" % (DB_PATH, DB_FILENAME)
     # SQLALCHEMY_DATABASE_URI = "sqlite:///../db/%s" % (DB_FILENAME)
-    SQLALCHEMY_DATABASE_URI = "sqlite:///db/%s" % (DB_FILENAME)
+    # SQLALCHEMY_DATABASE_URI = "sqlite:///db/%s" % (DB_FILENAME)
+
+    BACKUP_TIME = timedelta(minutes=30)
+    BACKUP_PATH = os.path.join(BASE_DIR, "db", "backup")
+    BACKUP_FILENAME = "blog-%s.db"
 
     VIEW_CASE = "edit_case"
 
