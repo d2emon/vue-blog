@@ -51,6 +51,7 @@ manager = Manager(app)
 
 
 from views import *
+from blog.views import *
 # from execom.commands import *
 # from execom.views import *
 # from case.views import *
