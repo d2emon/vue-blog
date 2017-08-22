@@ -1,16 +1,16 @@
 {
-  "name": "flask-template",
-  "description": "Template for Flask projects",
+  "name": "flask-blog",
+  "description": "Flask-based blog",
   "main": "src/manage.py",
   "authors": [
     "Dmitry Kutsenko <d2emonium@gmail.com>"
   ],
   "license": "GPL-3.0",
   "keywords": [
-    "template",
-    "flask"
+    "flask",
+    "blog"
   ],
-  "homepage": "https://github.com/d2emon/flask-template",
+  "homepage": "https://github.com/d2emon/flask-blog",
   "private": true,
   "ignore": [
     "**/.*",
@@ -26,5 +26,5 @@
     "dropzone": "^5.0.1",
     "components-font-awesome": "^4.7.0",
     "crud-assets": "git+https://github.com/d2emon/crud-assets.git"
-  }  
+  }
 }

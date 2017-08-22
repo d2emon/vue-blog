@@ -48,15 +48,15 @@ build_exe_options = {
 
 base = None
 setup(
-    name='flask-template',
+    name='flask-blog',
     version=version,
     keywords=[
-        "template",
+        "blog",
         "flask"
     ],
-    description='Template for Flask projects',
+    description="Flask-based blog",
     long_description=long_description,
-    url='https://github.com/d2emon/flask-template#readme',
+    url='https://github.com/d2emon/flask-blog#readme',
     executables = [Executable("manage.py", base=base, icon=r"assets/favicon/favicon.ico")],
 
     author='Dmitry Kutsenko',
