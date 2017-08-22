@@ -101,3 +101,8 @@ ENV/
 .mypy_cache/
 /.project
 /.pydevproject
+
+/migrations/
+**/bower_components/
+**/node_modules/
+/gulpfile.js
