@@ -1,0 +1,32 @@
+div(class="menu")
+  div(id="menu-icon") Menu
+    ul
+      li(class="current_page_item", id="{% if nav_current=='index' %}current{% endif %}")
+        a(class="home", href="/") Home
+      li(class="page_item page-item-2", id="{% if nav_current=='python' %}current{% endif %}")
+        a(href="/category/1") Python
+      li(class="page_item page-item-2", id="{% if nav_current=='programming pearls' %}current{% endif %}")
+        a(href="/category/2") Programming
+      li(class="page_item page-item-2", id="{% if nav_current=='db cookbook' %}current{% endif %}")
+        a(href="/category/3") Cookbook           
+      li(class="page_item page-item-2", id="{% if nav_current=='linux/unix cookbook' %}current{% endif %}")
+        a(href="/category/4") *NIX
+      li(class="page_item page-item-2", id="{% if nav_current=='other' %}current{% endif %}")
+        a(href="/category/5") Other
+      li(class="page_item page-item-2", id="{% if nav_current=='about' %}current{% endif %}")
+        a(href="/about") About
+      li(class="page_item page-item-2", id="{% if nav_current=='rss' %}current{% endif %}")
+        a(href="/rss_lastnews") RSS
+
+  form(id="searchform", action="/search", method="get")
+    div
+      label(class="screen-reader-text", for="s") S???：
+      input(id="s", type="text", name="s", value="")
+      input(id="searchsubmit", type="submit", value="Submit")
+  
+  //.
+    form(id="quick-search", method="get", action="/search/")
+      fieldset(class="search")
+        label(for="q") Search:
+        input(class="tbox", id="qsearch", type="text", name="q", value="Search...", title="TITLE", onfocus="clS(1);", onblur="clS(0);")
+        button(class="btn", title="Search") Search

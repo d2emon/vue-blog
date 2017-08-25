@@ -30,14 +30,14 @@ html(class=" js no-flexbox canvas canvastext postmessage no-websqldatabase index
         div(id="inner-header", class="clearfix")
           hgroup(id="site-heading")
             h1(id="site-title")
-              a(rel="home", title="Home", href="/") python pub
-            h2(id="site-description") Description 
+              a(rel="home", title="Home", href="/") Flask-Blog
+            h2(id="site-description") My Flask-based blog.
           nav(id="access", role="navigation")
             h1(class="assistive-text section-heading") Main menu
             div(class="skip-link screen-reader-text")
               a(title="Skip to content", href="#content") Skip to content
             
-            | {% include '/head.html' %}
+            include __head.pug
 
       div(id="content", class="clearfix")
         div(id="main", class="col620 clearfix", role="main")
@@ -62,7 +62,8 @@ html(class=" js no-flexbox canvas canvastext postmessage no-websqldatabase index
                 span(class="sep", style="float:right") {{ a.view_num }} views
             div(class="entry-content post_content")
               | {% if (a.post_content|length)>3000 %}
-              | {{ (a.post_content|safe|html2textile)[:3000] }} ...
+              //- | {{ (a.post_content|safe|html2textile)[:3000] }} ...
+              | {{ (a.post_content|safe)[:3000] }} ...
               | {% else %}
               | {{ (a.post_content|safe) }} 
               | {% endif %}
@@ -82,7 +83,7 @@ html(class=" js no-flexbox canvas canvastext postmessage no-websqldatabase index
           | {% endfor %}
 
           div(id="Pagination", class="pagination")
-            a(href="/page/1") &raquo;
+            a(href="/page/1") &laquo;
             | {% for i in pagination %}
             | {% if i==pageid %}
             span(class="current") {{pageid}}
@@ -91,11 +92,12 @@ html(class=" js no-flexbox canvas canvastext postmessage no-websqldatabase index
             | {% endif %}
             | {% endfor %}
             span ...
-            a(href="/page/{{last_page}}") &laquo;
+            a(href="/page/{{last_page}}") &raquo;
        
         div(id="sidebar", class="widget-area col300", role="complementary")
           div(id="sidebar-wrap", class="clearfix")
-            | {% include '/sider.html' %}
+            include __side.pug
+
       footer(id="colophon", role="contentinfo")
         div(id="site-generator")
-          | {% include '/foot.html' %}
+          include __foot.pug
