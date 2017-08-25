@@ -41,38 +41,39 @@ html(class=" js no-flexbox canvas canvastext postmessage no-websqldatabase index
 
       div(id="content", class="clearfix")
         div(id="main", class="col620 clearfix", role="main")
-          | {% for a in articles %}
+          // Articles
+          | {% for a in articles.items %}
           article(id="post-71", class="post-71 post type-post status-publish format-standard hentry category-9 tag-10 tag-11 tag-12 tag-13")
             header(class="entry-header")
               h1(class="entry-title")
-                a(rel="bookmark", title="Permalink to {{a.post_title}}", href="/article/{{a.id}}") {{a.post_title}}
+                a(rel="bookmark", title="Permalink to {{a.title}}", href="/article/{{a.id}}") {{a.title}}
               div(class="entry-meta")
                 span(class="sep") Posted on 
-                a(rel="bookmark", title="title", href="/article/{{a.id}}")
-                  time(class="entry-date", datetime="2013-01-01T00:00:00+00:00") {{ a.post_create_time|safe }}
+                a(rel="bookmark", title="{{a.title}}", href="/article/{{a.id}}")
+                  time(class="entry-date", datetime="2013-01-01T00:00:00+00:00") {{ a.created_at|safe }}
                 span(class="byline")
                   span(class="sep") by 
                   span(class="author vcard")
-                    a(class="url fn n", rel="author", title="View all posts by dan", href="/") dan
+                    a(class="url fn n", rel="author", title="View all posts by {{a.author}}", href="/") {{a.author}}
                 span(class="sep", style="float:right")
                   p
                     a(class="more", href="/article/{{a.id}}") &raquo;
                 span(class="sep", style="float:right")
-                    a(title="{{a.post_title}}", href="/article/{{a.id}}#comments") {{a.comment_count}} comments
-                span(class="sep", style="float:right") {{ a.view_num }} views
+                    a(title="Comments for {{a.title}}", href="/article/{{a.id}}#comments") {{a.comments_count}} comments
+                span(class="sep", style="float:right") {{ a.views }} views
             div(class="entry-content post_content")
               | {% if (a.post_content|length)>3000 %}
-              //- | {{ (a.post_content|safe|html2textile)[:3000] }} ...
-              | {{ (a.post_content|safe)[:3000] }} ...
+              //- | {{ (a.content|safe|html2textile)[:3000] }} ...
+              | {{ (a.content|safe)[:3000] }} ...
               | {% else %}
-              | {{ (a.post_content|safe) }} 
+              | {{ (a.content|safe) }} 
               | {% endif %}
               p
                 a(class="more", href="/article/{{a.id}}", style="float:right") &raquo;
             footer(class="entry-meta")
               span(class="cat-links")
                 | Posted in
-                a(rel="tag", title="Category {{a.categorys.category_name}}", href="/category/{{a.categorys.id}}") {{a.categorys.category_name}}
+                a(rel="tag", title="Category {{a.categories.category_name}}", href="/category/{{a.categories.id}}") {{a.categories.category_name}}
               span(class="sep") | 
               span(class="tag-links")
                 | Tagged:
@@ -82,17 +83,41 @@ html(class=" js no-flexbox canvas canvastext postmessage no-websqldatabase index
                 | {% endfor %}
           | {% endfor %}
 
+          // Pagination
+          | {% if articles.pages > 1 %}
           div(id="Pagination", class="pagination")
             a(href="/page/1") &laquo;
-            | {% for i in pagination %}
-            | {% if i==pageid %}
-            span(class="current") {{pageid}}
+            | {%- for page in articles.iter_pages() %}
+            | {% if page %}
+            | {% if page == articles.page %}
+            span(class="current") {{page}}
             | {% else %}
-            a(href="/page/{{i}}") {{i}}
+            a(href="/page/{{page}}") {{page}}
             | {% endif %}
-            | {% endfor %}
-            span ...
-            a(href="/page/{{last_page}}") &raquo;
+            | {% else %}
+            span(class=ellipsis) …
+            | {% endif %}
+            | {%- endfor %}
+            a(href="/page/{{articles.next_num}}") &raquo;
+          //
+            | {% set items=articles %}
+            ul(class="pagination pagination-sm", style="display:inherit;")
+              li(class="{% if not items.has_prev %}disabled{% endif %}")
+                a(href="?page={{ items.prev_num }}")
+                  span(class="glyphicon glyphicon-menu-left")
+              | {%- for page in items.iter_pages() %}
+              | {% if page %}
+              li(class="{% if page == items.page %}active{% endif %}")
+                a(href="?page={{ page }}") {{ page }}
+              | {% else %}
+              li
+                span(class=ellipsis) …
+              | {% endif %}
+              | {%- endfor %}
+              li(class="{% if not items.has_next %}disabled{% endif %}")
+                a(href="?page={{ items.next_num }}")
+                 span(class="glyphicon glyphicon-menu-right")
+          | {% endif %}
        
         div(id="sidebar", class="widget-area col300", role="complementary")
           div(id="sidebar-wrap", class="clearfix")

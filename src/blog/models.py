@@ -14,8 +14,8 @@ article_tags = db.Table(
 class Category(db.Model):
     # __tablename__ = 'category'
     # query_class = CategoryQuery
-    id=db.Column(db.Integer, primary_key=True)
-    category_name=db.Column(db.String(255), unique=True)
+    id = db.Column(db.Integer, primary_key=True)
+    category_name = db.Column(db.String(255), unique=True)
 
     def __init__(self, *args, **kwargs):
         super(Category, self).__init__(*args, **kwargs)
@@ -27,8 +27,8 @@ class Category(db.Model):
 class Tag(db.Model):
     # __tablename__ = 'tag'
     # query_class = TagQuery
-    id=db.Column(db.Integer, primary_key=True)
-    name=db.Column(db.String(50))
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(50))
 
     def __init__(self, *args, **kwargs):
         super(Tag, self).__init__(*args, **kwargs)
@@ -40,28 +40,28 @@ class Tag(db.Model):
 class Post(db.Model):
     # __tablename__ = 'post'
     # query_class = PostQuery
-    id=db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.Integer, primary_key=True)
     # name=db.Column(db.String(255), unique=True)
-    title=db.Column(db.String(128))
-    content=db.Column(db.Text)
+    title = db.Column(db.String(128))
+    content = db.Column(db.Text)
 
-    created_at=db.Column(db.DateTime, default=datetime.utcnow)
-    modified_at=db.Column(db.DateTime, default=datetime.utcnow)
-    views=db.Column(db.Integer, default=0)
-    comments_count=db.Column(db.Integer, default=0)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    modified_at = db.Column(db.DateTime, default=datetime.utcnow)
+    views = db.Column(db.Integer, default=0)
+    comments_count = db.Column(db.Integer, default=0)
 
     # status=db.Column(db.Integer, default=1)
 
     # author_id=db.Column(db.Integer, default=1)
 
-    category_id=db.Column(db.Integer, db.ForeignKey('category.id'))
-    categories=db.relationship(
+    category_id = db.Column(db.Integer, db.ForeignKey('category.id'))
+    categories = db.relationship(
         'Category',
         backref=db.backref('posts', lazy='dynamic'),
         lazy='select'
     )
 
-    tags=db.relationship(
+    tags = db.relationship(
         'Tag',
         secondary=article_tags,
         backref=db.backref('posts', lazy='dynamic')
@@ -72,7 +72,11 @@ class Post(db.Model):
         super(Post, self).__init__(*args, **kwargs)
 
     def __repr__(self):
-        return '<post %r>' % self.post_title
+        return '<post %r>' % self.title
+
+    @property
+    def author(self):
+        return "d2emon"
 
     # def _url(self):
     #     return url_for('article_byname', postname=self.post_name)

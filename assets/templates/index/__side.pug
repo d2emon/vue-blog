@@ -32,7 +32,7 @@ aside(id="recent-posts-3", class="widget widget_recent_entries")
   ul
     | {% for a in newpost %}
     li
-      a(title="{{a.post_title}}", href="/article/{{a.id}}") {{a.post_title}}
+      a(title="{{a.title}}", href="/article/{{a.id}}") {{a.post_title}}
     | {% endfor %}
 
 aside(id="recent-posts-4", class="widget widget_recent_entries")
@@ -40,7 +40,7 @@ aside(id="recent-posts-4", class="widget widget_recent_entries")
   ul
     | {% for a in hotarticles %}
     li
-      a(title="{{a.post_title}}", href="/article/{{a.id}}") {{a.post_title}}
+      a(title="{{a.title}}", href="/article/{{a.id}}") {{a.post_title}}
     | {% endfor %}
 
 aside(id="tag_cloud-5", class="widget widget_tag_cloud")
@@ -55,7 +55,7 @@ aside(id="tag_cloud-5", class="widget widget_tag_cloud")
 aside(id="recent-posts-4", class="widget widget_recent_entries")
   h2(class="widget-title") Categories
   ul
-    | {% for c in categorys %}
+    | {% for c in categories %}
     li
       a(title="Category {{c.category_name}}", href="/category/{{c.id}}") {{c.category_name}}({{c.posts.count()}})
     | {% endfor %}
