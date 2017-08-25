@@ -51,7 +51,7 @@ def index(page_id=1):
 
 @app.route('/category/<int:cat_id>')
 @app.route('/category/<int:cat_id>/page/<int:page_id>')
-def category(cat_id=1, page_id=1):
+def category(cat_id, page_id=1):
     # categories = Category.query.getall()
     categories = Category.query.all()
 
@@ -82,7 +82,43 @@ def category(cat_id=1, page_id=1):
         newpost=new,
         tags=tag,
         # comments=comments,
-        page_id=page_id,
+    )
+
+
+@app.route('/tag/<int:tag_id>')
+@app.route('/tag/<int:tag_id>/page/<int:page_id>')
+def tag(tag_id, page_id=1):
+    # categories = Category.query.getall()
+    categories = Category.query.all()
+
+    # hot = Post.query.hottest()[:20]
+    hot = Post.query.all()[:20]
+    # new = Post.query.newpost()[:20]
+    new = Post.query.all()[:20]
+
+    # tag = Tag.query.getall()
+    tag = Tag.query.all()
+    random.shuffle(tag)
+    tag = tag[:20]
+
+    # comments = Comment.query.newcomment()[:20]
+
+    tagall = Tag.query.get_or_404(tag_id)
+    name = tagall.name
+    # p = Post.query.search_tag(name)
+    p = Post.query
+    articles = p.paginate(page(), app.config.get('RECORDS_ON_PAGE'))
+
+    return render_template(
+        '/index/tag.html',
+        id=tag_id,
+        tagall=tagall,
+        categories=categories,
+        articles=articles,
+        hotarticles=hot,
+        newpost=new,
+        tags=tag,
+        # comments=comments,
     )
 
 
