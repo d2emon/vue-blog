@@ -1,4 +1,4 @@
-from flask import request, render_template
+from flask import g, request, render_template
 from app import app
 from .models import Category, Tag, Post
 
@@ -15,36 +15,35 @@ def page():
     return page
 
 
-@app.route('/')
-@app.route('/page/<int:page_id>')
-def index(page_id=1):
+def load_sidebar():
     # categories = Category.query.getall()
-    categories = Category.query.all()
+    g.categories = Category.query.all()
 
-    # post = Post.query.getpost_perpage(page_id, app.config.PER_PAGE)
-    post = Post.query  # filter_by(id=page_id, app.config.PER_PAGE)
     # hot = Post.query.hottest()[:20]
-    hot = Post.query.all()[:20]
+    g.hotarticles = Post.query.all()[:20]
     # new = Post.query.newpost()[:20]
-    new = Post.query.all()[:20]
+    g.newpost = Post.query.all()[:20]
 
     # tag = Tag.query.getall()
     tag = Tag.query.all()
     random.shuffle(tag)
-    tag = tag[:20]
+    g.tags = tag[:20]
 
     # comments = Comment.query.newcomment()[:20]
+
+
+@app.route('/')
+@app.route('/page/<int:page_id>')
+def index(page_id=1):
+    load_sidebar()
+
+    # post = Post.query.getpost_perpage(page_id, app.config.PER_PAGE)
+    post = Post.query  # filter_by(id=page_id, app.config.PER_PAGE)
     articles = post.paginate(page(), app.config.get('RECORDS_ON_PAGE'))
 
     return render_template(
         '/index/index.html',
-        categories=categories,
         articles=articles,
-        hotarticles=hot,
-        newposts=new,
-        tags=tag,
-        # comments=comments,
-
         nav_current="index"
     )
 
@@ -52,20 +51,7 @@ def index(page_id=1):
 @app.route('/category/<int:cat_id>')
 @app.route('/category/<int:cat_id>/page/<int:page_id>')
 def category(cat_id, page_id=1):
-    # categories = Category.query.getall()
-    categories = Category.query.all()
-
-    # hot = Post.query.hottest()[:20]
-    hot = Post.query.all()[:20]
-    # new = Post.query.newpost()[:20]
-    new = Post.query.all()[:20]
-
-    # tag = Tag.query.getall()
-    tag = Tag.query.all()
-    random.shuffle(tag)
-    tag = tag[:20]
-
-    # comments = Comment.query.newcomment()[:20]
+    load_sidebar()
 
     cat = Category.query.get_or_404(cat_id)
 
@@ -76,32 +62,14 @@ def category(cat_id, page_id=1):
         '/index/category.html',
         id=cat_id,
         cat=cat,
-        categories=categories,
         articles=articles,
-        hotarticles=hot,
-        newpost=new,
-        tags=tag,
-        # comments=comments,
     )
 
 
 @app.route('/tag/<int:tag_id>')
 @app.route('/tag/<int:tag_id>/page/<int:page_id>')
 def tag(tag_id, page_id=1):
-    # categories = Category.query.getall()
-    categories = Category.query.all()
-
-    # hot = Post.query.hottest()[:20]
-    hot = Post.query.all()[:20]
-    # new = Post.query.newpost()[:20]
-    new = Post.query.all()[:20]
-
-    # tag = Tag.query.getall()
-    tag = Tag.query.all()
-    random.shuffle(tag)
-    tag = tag[:20]
-
-    # comments = Comment.query.newcomment()[:20]
+    load_sidebar()
 
     tagall = Tag.query.get_or_404(tag_id)
     name = tagall.name
@@ -113,31 +81,13 @@ def tag(tag_id, page_id=1):
         '/index/tag.html',
         id=tag_id,
         tagall=tagall,
-        categories=categories,
         articles=articles,
-        hotarticles=hot,
-        newpost=new,
-        tags=tag,
-        # comments=comments,
     )
 
 
 @app.route('/article/<int:post_id>')
 def article(post_id):
-    # categories = Category.query.getall()
-    categories = Category.query.all()
-
-    # hot = Post.query.hottest()[:20]
-    hot = Post.query.all()[:20]
-    # new = Post.query.newpost()[:20]
-    new = Post.query.all()[:20]
-
-    # tag = Tag.query.getall()
-    tag = Tag.query.all()
-    random.shuffle(tag)
-    tag = tag[:20]
-
-    # comments = Comment.query.newcomment()[:20]
+    load_sidebar()
 
     # articles = Post.query.getall()
     articles = Post.query.all()
@@ -153,11 +103,6 @@ def article(post_id):
         '/index/post.html',
         post=post,
         articles=articles,
-        categories=categories,
-        hotarticles=hot,
-        newpost=new,
-        tags=tag,
-        # comments=comments,
         # postcoments=postcoments,
         # form=form
     )

@@ -30,17 +30,17 @@ aside(id="recent-posts-4", class="widget widget_recent_entries")
 aside(id="recent-posts-3", class="widget widget_recent_entries")
   h2(class="widget-title") New posts
   ul
-    | {% for a in newpost %}
+    | {% for a in g.newpost %}
     li
-      a(title="{{a.title}}", href="/article/{{a.id}}") {{a.post_title}}
+      a(title="{{a.title}}", href="/article/{{a.id}}") {{a.title}}
     | {% endfor %}
 
 aside(id="recent-posts-4", class="widget widget_recent_entries")
   h2(class="widget-title") Hot posts
   ul
-    | {% for a in hotarticles %}
+    | {% for a in g.hotarticles %}
     li
-      a(title="{{a.title}}", href="/article/{{a.id}}") {{a.post_title}}
+      a(title="{{a.title}}", href="/article/{{a.id}}") {{a.title}}
     | {% endfor %}
 
 aside(id="tag_cloud-5", class="widget widget_tag_cloud")
@@ -48,14 +48,14 @@ aside(id="tag_cloud-5", class="widget widget_tag_cloud")
   div(class="tagcloud")
     | {% set row_class = cycler('font-size:12.656565656pt;', 'font-size:8pt;', 'font-size:21.0567465745647pt;', 'font-size:9.0567465745647pt;','font-size:7.0567465745647pt;','font-size:14.0567465745647pt;', 'font-size:17.0567465745647pt;', 'font-size:10.0567465745647pt;','font-size:18.0567465745647pt;', 'font-size:9.0567465745647pt;', 'font-size:16.0567465745647pt;', 'font-size:19.0567465745647pt;', 'font-size:7.0567465745647pt;', 'font-size:10.0567465745647pt;','font-size:15.0567465745647pt;', 'font-size:8.0567465745647pt;', 'font-size:20.0567465745647pt;', 'font-size:17.0567465745647pt;', 'font-size:14.0567465745647pt;', 'font-size:15.0567465745647pt;') %}
     | {% set color_class = cycler('color:#ac1dfe;','color:#bcb46e;','color:#4298e7;','color:#a7bce8','color:#e6eca8;','color:#d4349a;','color:#5b48ce;','color:#b5b1ea;', 'color:#fe4516;','color:#a68d32;','color:#68d6e5;','color:#5c8d29;','color:#9c7da1;','color:#243f2a;','color:#6c7d99;','color:#9cade9;', 'color:#1ced29;','color:#ec3de9;','color:#367d29;','color:#cccd29;') %}
-    | {% for tag in tags %}
+    | {% for tag in g.tags %}
     a(class="tag-link-17", style="{{color_class.next()}}{{row_class.next()}}", href="/tag/{{tag.id}}") {{tag.name}}
     | {% endfor %}
 
 aside(id="recent-posts-4", class="widget widget_recent_entries")
   h2(class="widget-title") Categories
   ul
-    | {% for c in categories %}
+    | {% for c in g.categories %}
     li
       a(title="Category {{c.category_name}}", href="/category/{{c.id}}") {{c.category_name}}({{c.posts.count()}})
     | {% endfor %}
@@ -63,7 +63,7 @@ aside(id="recent-posts-4", class="widget widget_recent_entries")
 aside(id="recent-comments-3", class="widget widget_recent_comments")
   h2(class="widget-title") Comments
   ul(id="recentcomments")
-    | {% for comment in comments %}
+    | {% for comment in g.comments %}
     li
       a(title="{{comment.post_id}}", href="/article/{{comment.post_id}}#comments") {{comment.author_name}}
       | : {{(comment.content|safe)[:30]}} ...
