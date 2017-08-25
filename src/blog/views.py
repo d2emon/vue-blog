@@ -34,7 +34,6 @@ def index(page_id=1):
     tag = tag[:20]
 
     # comments = Comment.query.newcomment()[:20]
-    # articles = post  # .items
     articles = post.paginate(page(), app.config.get('RECORDS_ON_PAGE'))
 
     return render_template(
@@ -46,9 +45,46 @@ def index(page_id=1):
         tags=tag,
         # comments=comments,
 
-        # page_id=page_id,
-        # pagination=pagination[page_id - 1:page_id + 10],
-        # last_page=pagination[-1],
-
         nav_current="index"
+    )
+
+
+@app.route('/article/<int:post_id>')
+def article(post_id):
+    # categories = Category.query.getall()
+    categories = Category.query.all()
+
+    # hot = Post.query.hottest()[:20]
+    hot = Post.query.all()[:20]
+    # new = Post.query.newpost()[:20]
+    new = Post.query.all()[:20]
+
+    # tag = Tag.query.getall()
+    tag = Tag.query.all()
+    random.shuffle(tag)
+    tag = tag[:20]
+
+    # comments = Comment.query.newcomment()[:20]
+
+    # articles = Post.query.getall()
+    articles = Post.query.all()
+    random.shuffle(articles)
+    articles = articles[:5]
+
+    post = Post.query.get_or_404(post_id)
+    # form = CommentForm()
+    # postcoments = post.comments.all()
+    post.views += 1
+    # db.session.commit()
+    return render_template(
+        '/index/post.html',
+        post=post,
+        articles=articles,
+        categories=categories,
+        hotarticles=hot,
+        newpost=new,
+        tags=tag,
+        # comments=comments,
+        # postcoments=postcoments,
+        # form=form
     )
