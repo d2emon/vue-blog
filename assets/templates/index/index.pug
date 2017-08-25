@@ -1,6 +1,8 @@
 extends __base.pug
 
 block content
+  block title
+
   // Articles
   | {% for a in articles.items %}
   article(id="post-71", class="post-71 post type-post status-publish format-standard hentry category-9 tag-10 tag-11 tag-12 tag-13")
@@ -60,6 +62,7 @@ block content
     | {%- endfor %}
     a(href="/page/{{articles.next_num}}") &raquo;
   //
+    | Commented
     | {% set items=articles %}
     ul(class="pagination pagination-sm", style="display:inherit;")
       li(class="{% if not items.has_prev %}disabled{% endif %}")
@@ -77,4 +80,4 @@ block content
       li(class="{% if not items.has_next %}disabled{% endif %}")
         a(href="?page={{ items.next_num }}")
           span(class="glyphicon glyphicon-menu-right")
-      | {% endif %}
+  | {% endif %}
