@@ -3,16 +3,10 @@ div(class="menu")
     ul
       li(class="current_page_item", id="{% if nav_current=='index' %}current{% endif %}")
         a(class="home", href="/") Home
-      li(class="page_item page-item-2", id="{% if nav_current=='python' %}current{% endif %}")
-        a(href="/category/1") Python
-      li(class="page_item page-item-2", id="{% if nav_current=='programming pearls' %}current{% endif %}")
-        a(href="/category/2") Programming
-      li(class="page_item page-item-2", id="{% if nav_current=='db cookbook' %}current{% endif %}")
-        a(href="/category/3") Cookbook           
-      li(class="page_item page-item-2", id="{% if nav_current=='linux/unix cookbook' %}current{% endif %}")
-        a(href="/category/4") *NIX
-      li(class="page_item page-item-2", id="{% if nav_current=='other' %}current{% endif %}")
-        a(href="/category/5") Other
+      | {% for c in g.categories %}
+      li(class="page_item page-item-2", id="{% if cat %}{% if cat.id==c.id%}current{% endif %}{% endif %}")
+        a(href="/category/{{ c.id }}") {{ c.category_name }}
+      | {% endfor %}
       li(class="page_item page-item-2", id="{% if nav_current=='about' %}current{% endif %}")
         a(href="/about") About
       li(class="page_item page-item-2", id="{% if nav_current=='rss' %}current{% endif %}")

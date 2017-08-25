@@ -48,6 +48,15 @@ def index(page_id=1):
     )
 
 
+@app.route('/about')
+def about():
+    load_sidebar()
+
+    return render_template(
+        '/index/about.html',
+    )
+
+
 @app.route('/category/<int:cat_id>')
 @app.route('/category/<int:cat_id>/page/<int:page_id>')
 def category(cat_id, page_id=1):
