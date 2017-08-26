@@ -4,6 +4,31 @@ from app import db
 from datetime import datetime
 
 
+class User():
+    username = "test"
+    password = "test"
+    error = ""
+
+    def login(self, username, password):
+        self.error = ""
+        if username != self.username:
+            self.error = 'Invalid username'
+        elif password != self.password:
+            self.error = 'Invalid password'
+
+        return self.error == ""
+
+    @property
+    def is_active(self):
+        return True
+
+    @property
+    def is_authenticated(self):
+        return True
+
+    def get_id(self):
+        return 1
+
 article_tags = db.Table(
     'tags',
     db.Column('tag_id', db.Integer, db.ForeignKey('tag.id')),

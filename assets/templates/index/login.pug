@@ -1,0 +1,38 @@
+doctype html
+html(xmlns="http://www.w3.org/1999/xhtml", dir="ltr", lang="ru-RU")
+  head
+    meta(http-equiv="Content-Type", content="text/html; charset=UTF-8")
+    link(rel='stylesheet', id='wp-admin-css', href='/static/css/admin.css', type='text/css', media='all')
+    link(rel='stylesheet', id='colors-fresh-css', href='/static/css/color.css', type='text/css', media='all')
+    meta(name='robots', content='noindex,nofollow')
+  body(class="login")
+    div(class="metanav")
+      | {% if not session.logged_in %}
+      a(href="{{ url_for('login') }}") log in
+      | {% else %}
+      a(href="{{ url_for('logout') }}") log out
+      | {% endif %}
+    div(id="login")
+      form(action="{{ url_for('login') }}", method="post")
+        p
+          label(for="user_login") Login<br />
+          input(type="text", name="username", id="username", class="input", value="", size="20", tabindex="10")
+        p
+          label(for="user_pass") Password<br />
+          input(type="password", name="password", id="password", class="input", value="", size="20", tabindex="20")
+        p(class="submit")
+          input(type="submit", name="Login", id="wp-submit", class="button-primary", value="Submit", tabindex="100")
+      script(type="text/javascript").
+        function wp_attempt_focus(){
+          setTimeout( function(){ try{
+            d = document.getElementById('user_login');
+            d.focus();
+            d.select();
+            } catch(e){}
+          }, 200);
+        }
+        wp_attempt_focus();
+        if(typeof wpOnload=='function')wpOnload();
+      p(id="backtoblog")
+        a(href="/", title="不知道自己在哪？") &larr; 回到派森吧 - pythonpub.com&#039; Home
+    div(class="clear")

@@ -1,0 +1,39 @@
+doctype html
+html
+  head
+    meta(http-equiv="Content-Type", content="text/html; charset=utf8")
+    title New Article
+    script(charset="utf-8", src="/static/kindeditor/kindeditor-min.js")
+    script(charset="utf-8", src="/static/kindeditor/zh_CN.js")
+    script.
+      var editor;
+      KindEditor.ready(function(K){
+        editor = K.create('#editor_id');
+      });
+    style(type="text/css")
+      #content {margin:0 auto; width:710px;}
+      #article_form {margin-top:50px;}
+      #title {height:30px;}
+  body
+    div(id="content")
+      form(id="article_form", action="/addpost", method="post")
+        p
+          span(style="font-size:16px;font-weight:bold;") Title:
+          input(type="text", name="title", id="title", size="80")
+        p
+          span(style="font-size:16px;font-weight:bold;") Postname:
+          input(type="text", name="postname", id="postname", size="80")
+        br
+        textarea(id="editor_id", name="content", style="width:700px;height:500px;")
+        p Tags: <input type="text" name="tags" size="70" />
+        p
+          | {% for category in g.categories %}
+          | {{ category.category_name }}<input type="radio" name="category" value="{{ category.id }}" />&nbsp;&nbsp;
+          | {% endfor %}
+        input(type="submit")
+
+      form(id="article_form", action="/epost", method="get")
+        p
+          span(style="font-size:16px;font-weight:bold;") post number：
+          input(type="text", name="post", id="post", size="80")
+        input(type="submit")
