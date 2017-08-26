@@ -2,6 +2,7 @@ from flask import g, request, render_template, redirect, flash, url_for
 from flask_login import login_required, current_user, login_user, logout_user
 from app import app, db, login_manager
 from .models import Category, Tag, Post, User
+from .forms import PostForm, EForm
 
 
 import random
@@ -164,4 +165,8 @@ def addpost():
         db.session.add(post)
         db.session.commit()
 
-    return render_template('/index/newpost.html')
+    return render_template(
+        '/index/newpost.html',
+        post_form=PostForm(),
+        e_form=EForm(),
+    )
