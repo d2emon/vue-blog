@@ -8,6 +8,7 @@ html(class=" js no-flexbox canvas canvastext postmessage no-websqldatabase index
     meta(property="wb:webmaster", content="3caf5a5b94e6991e")
     link(rel="shortcut icon", href="/static/images/chine.ico")
     title Flask-Blog
+    link(rel="stylesheet", type="text/css", href="{{ url_for('static', filename='style.css') }}")
     link(type="text/css", rel="stylesheet", href="/static/css/SyntaxHighlighter/shCoreEclipse.css")
     link(id="diginews_style-css", media="all", type="text/css", href="/static/css/style.css", rel="stylesheet")
     script(src="/static/js/modernizr-2.6.1.min.js?ver=2.6.1", type="text/javascript")
@@ -43,6 +44,16 @@ html(class=" js no-flexbox canvas canvastext postmessage no-websqldatabase index
 
       div(id="content", class="clearfix")
         div(id="main", class="col620 clearfix", role="main")
+          div(class="page")
+            div(class="metanav")
+              | {% if not g.user %}
+              a(href="{{ url_for('login') }}") log in
+              | {% else %}
+              a(href="{{ url_for('logout') }}") log out
+              | {% endif %}
+            | {% for message in get_flashed_messages() %}
+            div(class=flash) {{ message }}
+            | {% endfor %}
           block content
 
         div(id="sidebar", class="widget-area col300", role="complementary")
