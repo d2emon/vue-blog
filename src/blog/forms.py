@@ -1,9 +1,25 @@
-from flask_wtf import Form, RecaptchaField
+from flask_wtf import FlaskForm, RecaptchaField
 from wtforms import SubmitField, TextField, TextAreaField
 from wtforms.validators import InputRequired, Length
+from wtforms_alchemy import model_form_factory
 
 
-class LoginForm(Form):
+from .models import Post
+
+
+from ..app import db
+
+
+BaseModelForm = model_form_factory(FlaskForm)
+
+
+class ModelForm(BaseModelForm):
+    @classmethod
+    def get_session(self):
+        return db.session
+
+
+class LoginForm(FlaskForm):
     username = TextField(
         "Username",
         validators=[
@@ -22,7 +38,7 @@ class LoginForm(Form):
     submit = SubmitField("Login")
 
 
-class PostForm(Form):
+class PostForm(ModelForm):
     title = TextField("Title")
     postname = TextField("Postname")
     content = TextAreaField("Postname")
@@ -33,7 +49,10 @@ class PostForm(Form):
     recaptcha = RecaptchaField("Copy the words appearing below")
     submit = SubmitField("Submit")
 
+    class Meta:
+        model = Post    
 
-class EForm(Form):
+
+class EForm(FlaskForm):
     postnumber = TextField("Postnumber")
     submit = SubmitField("Submit")
