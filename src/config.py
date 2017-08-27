@@ -30,7 +30,7 @@ class Config(object):
     # configuration db
     DB_PATH = os.path.join(BASE_DIR, "db")
     DB_FILENAME = "blog.db"
-    SQLALCHEMY_DATABASE_URI = "sqlite:////%s/%s" % (DB_PATH, DB_FILENAME)
+    SQLALCHEMY_DATABASE_URI = "sqlite:///%s" % (os.path.join(DB_PATH, DB_FILENAME))
     # SQLALCHEMY_DATABASE_URI = "sqlite:///../db/%s" % (DB_FILENAME)
     # SQLALCHEMY_DATABASE_URI = "sqlite:///db/%s" % (DB_FILENAME)
     # SQLALCHEMY_DATABASE_URI = "mysql://%s:%s@%s/%s" % ('root', 'root', '127.0.0.1', 'pythonpub1')
