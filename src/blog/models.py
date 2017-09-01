@@ -68,7 +68,10 @@ class Post(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     # name=db.Column(db.String(255), unique=True)
     title = db.Column(db.String(128))
-    content = db.Column(db.Text)
+    content = db.Column(
+        db.Text,
+        info={'label': "Content:", 'render_kw': {'class': "huy"}},
+    )
 
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     modified_at = db.Column(db.DateTime, default=datetime.utcnow)

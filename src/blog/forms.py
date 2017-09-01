@@ -39,18 +39,20 @@ class LoginForm(FlaskForm):
 
 
 class PostForm(ModelForm):
-    title = TextField("Title")
-    postname = TextField("Postname")
-    content = TextAreaField("Postname")
-    tags = TextField("Tags")
+    title = TextField("Title:")
+    postname = TextField("Postname:")
+    # content = TextAreaField("Content:")
+    tags = TextField("Tags:")
+
     # {% for category in g.categories %}
     # {{ category.category_name }}<input type="radio" name="category" value="{{ category.id }}" />&nbsp;&nbsp;
     # {% endfor %}
-    recaptcha = RecaptchaField("Copy the words appearing below")
+    # recaptcha = RecaptchaField("Copy the words appearing below")
     submit = SubmitField("Submit")
 
     class Meta:
         model = Post
+        exclude = ['views', 'comments_count', 'tags_name']
 
 
 class EForm(FlaskForm):

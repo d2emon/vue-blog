@@ -1,46 +1,66 @@
-doctype html
-html
-  head
-    meta(http-equiv="Content-Type", content="text/html; charset=utf8")
-    title New Article
-    script(charset="utf-8", src="/static/kindeditor/kindeditor-min.js")
-    script(charset="utf-8", src="/static/kindeditor/zh_CN.js")
-    script.
-      var editor;
-      KindEditor.ready(function(K){
-        editor = K.create('#editor_id');
-      });
-    style(type="text/css")
-      #content {margin:0 auto; width:710px;}
-      #article_form {margin-top:50px;}
-      #title {height:30px;}
-  body
-    div(id="content")
-      form(id="article_form", action="/addpost", method="post")
-        | {{ post_form.hidden_tag() }}
-        p
-          span(style="font-size:16px;font-weight:bold;") {{ post_form.title.label }}:
-          | {{ post_form.title(size=80) }}
-        p
-          span(style="font-size:16px;font-weight:bold;") {{ post_form.postname.label }}:
-          | {{ post_form.postname(size=80) }}
-        p
-          span(style="font-size:16px;font-weight:bold;") {{ post_form.content.label }}:
-          | {{ post_form.content(id="editor_id", style="width:700px;height:500px;") }}
-        p
-          span(style="font-size:16px;font-weight:bold;") {{ post_form.tags.label }}:
-          | {{ post_form.tags(size=70) }}
-        p
-          | {% for category in g.categories %}
-          | {{ category.category_name }}<input type="radio" name="category" value="{{ category.id }}" />&nbsp;&nbsp;
-          | {% endfor %}
-        p
-          | {# { post_form.recaptcha } #}
-        | {{ post_form.submit }}
+extends __base.pug
 
-      form(id="article_form", action="/epost", method="get")
-        | {{ e_form.hidden_tag() }}
-        p
-          span(style="font-size:16px;font-weight:bold;") post number：
-          input(type="text", name="post", id="post", size="80")
-        | {{ e_form.submit }}
+block scripts
+  script(charset="utf-8", src="/static/js/kindeditor/kindeditor-min.js")
+  script(charset="utf-8", src="/static/js/kindeditor/zh_CN.js")
+  script.
+    var editor;
+    KindEditor.ready(function(K){
+      editor = K.create('#content');
+    });
+  style(type="text/css")
+    #content {margin:0 auto; width:710px;}
+    #article_form {margin-top:50px;}
+    #title {height:30px;}
+
+block content
+  form(id="article_form", action="/addpost", method="post")
+    | {{ post_form.hidden_tag() }}
+    | {% macro render_field(field) %}
+    dt 
+      span(style="font-size:16px;font-weight:bold;") {{ field.label }}
+    dd
+      | {{ field(**kwargs) | safe }}
+      | {% if field.errors %}
+      ul(class="errors")
+        | {% for error in field.errors %}
+        li {{ error }}
+        | {% endfor %}
+      | {% endif %}
+    | {% endmacro %}
+    | {{ render_field(post_form.title, size=80, style="width:574px;") }}
+    | {{ render_field(post_form.postname, size=80, style="width:574px;") }}
+    | {{ render_field(post_form.content, style="width:574px;") }}
+    | {{ render_field(post_form.tags, size=80, style="width:574px;") }}
+    | {{ post_form.submit }}
+
+    p
+      span(style="font-size:16px;font-weight:bold;") {{ post_form.title.label }}:
+    p
+      | {{ post_form.title(size=80) }}
+    p
+      span(style="font-size:16px;font-weight:bold;") {{ post_form.postname.label }}:
+    p
+      | {{ post_form.postname(size=80) }}
+    p
+      span(style="font-size:16px;font-weight:bold;") {{ post_form.content.label }}:
+    p
+      | {{ post_form.content(id="editor_id", style="width:574px;height:500px;") }}
+    p
+      span(style="font-size:16px;font-weight:bold;") {{ post_form.tags.label }}:
+    p
+      | {{ post_form.tags(size=70) }}
+    p
+      | {% for category in g.categories %}
+      | {{ category.category_name }}<input type="radio" name="category" value="{{ category.id }}" />&nbsp;&nbsp;
+      | {% endfor %}
+    p
+      | {# { post_form.recaptcha } #}
+    | {{ post_form.submit }}
+
+  form(id="article_form", action="/epost", method="get")
+    | {{ e_form.hidden_tag() }}
+    p
+      span(style="font-size:16px;font-weight:bold;") post number：
+      input(type="text", name="post", id="post", size="80")
+    | {{ e_form.submit }}
