@@ -7,7 +7,7 @@ from wtforms_alchemy import model_form_factory
 from .models import Post
 
 
-from ..app import db
+from app import db
 
 
 BaseModelForm = model_form_factory(FlaskForm)
@@ -50,7 +50,7 @@ class PostForm(ModelForm):
     submit = SubmitField("Submit")
 
     class Meta:
-        model = Post    
+        model = Post
 
 
 class EForm(FlaskForm):

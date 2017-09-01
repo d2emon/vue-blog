@@ -17,26 +17,30 @@ html
   body
     div(id="content")
       form(id="article_form", action="/addpost", method="post")
+        | {{ post_form.hidden_tag() }}
         p
-          span(style="font-size:16px;font-weight:bold;") Title:
-          input(type="text", name="title", id="title", size="80")
+          span(style="font-size:16px;font-weight:bold;") {{ post_form.title.label }}:
+          | {{ post_form.title(size=80) }}
         p
-          span(style="font-size:16px;font-weight:bold;") Postname:
-          input(type="text", name="postname", id="postname", size="80")
-        br
-        textarea(id="editor_id", name="content", style="width:700px;height:500px;")
-        p Tags: <input type="text" name="tags" size="70" />
+          span(style="font-size:16px;font-weight:bold;") {{ post_form.postname.label }}:
+          | {{ post_form.postname(size=80) }}
+        p
+          span(style="font-size:16px;font-weight:bold;") {{ post_form.content.label }}:
+          | {{ post_form.content(id="editor_id", style="width:700px;height:500px;") }}
+        p
+          span(style="font-size:16px;font-weight:bold;") {{ post_form.tags.label }}:
+          | {{ post_form.tags(size=70) }}
         p
           | {% for category in g.categories %}
           | {{ category.category_name }}<input type="radio" name="category" value="{{ category.id }}" />&nbsp;&nbsp;
           | {% endfor %}
-        input(type="submit")
+        p
+          | {# { post_form.recaptcha } #}
+        | {{ post_form.submit }}
 
       form(id="article_form", action="/epost", method="get")
+        | {{ e_form.hidden_tag() }}
         p
           span(style="font-size:16px;font-weight:bold;") post number：
           input(type="text", name="post", id="post", size="80")
-        input(type="submit")
-      
-      | {{ post_form }}
-      | {{ e_form }}
+        | {{ e_form.submit }}
