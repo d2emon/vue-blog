@@ -1,4 +1,5 @@
 from flask import Flask
+from flask_cache import Cache
 from flask_debugtoolbar import DebugToolbarExtension
 from flask_login import LoginManager
 from flask_migrate import Migrate
@@ -46,6 +47,8 @@ import os
 debug = os.environ.get('FLASK_DEBUG', False)
 config_name = os.environ.get('FLASK_CONFIG', 'production')
 app = create_app(config_name=config_name)
+
+cache = Cache(app)
 
 toolbar = DebugToolbarExtension(app)
 
