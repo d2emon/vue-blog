@@ -1,11 +1,13 @@
+# from flask import Flask, render_template
 from flask import Flask
+# from flask_bootstrap import Bootstrap
 from flask_cache import Cache
 from flask_debugtoolbar import DebugToolbarExtension
 from flask_login import LoginManager
 from flask_migrate import Migrate
 from flask_script import Manager
 from flask_sqlalchemy import SQLAlchemy
-from config import BASE_DIR, app_config
+from config import app_config
 
 
 import logging
@@ -30,8 +32,8 @@ def create_app(debug=False, config_name='production'):
     app.config.from_object(app_config[config_name])
     app.config.from_pyfile('config.py')
     # app.config.from_envvar('FLASK_CONFIG_FILE')
-    app.static_folder = os.path.join(BASE_DIR, app.config.get('STATIC_FOLDER', 'static'))
-    app.template_folder = os.path.join(BASE_DIR, app.config.get('TEMPLATE_FOLDER', 'templates'))
+    app.static_folder = app.config.get('STATIC_FOLDER', 'static')
+    app.template_folder = app.config.get('TEMPLATE_FOLDER', 'templates')
 
     log_config = app.config.get("LOG", dict())
     app.logger.addHandler(create_logger(log_config))
@@ -48,11 +50,15 @@ debug = os.environ.get('FLASK_DEBUG', False)
 config_name = os.environ.get('FLASK_CONFIG', 'production')
 app = create_app(config_name=config_name)
 
+# bootstrap = Bootstrap(app)
+
 cache = Cache(app)
 
 toolbar = DebugToolbarExtension(app)
 
 login_manager = LoginManager(app)
+# login_manager.login_message = "You must be logged in to access this page."
+# login_manager.login_view = "auth.login"
 login_manager.login_view = 'login'
 
 manager = Manager(app)
@@ -63,6 +69,19 @@ db.create_all()
 migrate = Migrate(app, db)
 
 # Session(app)
+
+
+from blog import models
+
+
+# from .admin import admin as admin_blueprint
+# app.register_blueprint(admin_blueprint, url_prefix='/admin')
+
+# from .auth import auth as auth_blueprint
+# app.register_blueprint(auth_blueprint)
+
+# from .home import home as home_blueprint
+# app.register_blueprint(home_blueprint)
 
 
 from app.views import *

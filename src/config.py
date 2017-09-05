@@ -34,6 +34,9 @@ class Config(object):
     RECORDS_ON_PAGE = 50
     # PER_PAGE = 10
 
+    STATIC_FOLDER = os.path.join(BASE_DIR, 'static')
+    TEMPLATE_FOLDER = os.path.join(BASE_DIR, 'templates')
+
 
 class ProductionConfig(Config):
     pass
