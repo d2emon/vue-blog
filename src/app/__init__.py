@@ -1,4 +1,5 @@
 from flask import Flask
+from flask_debugtoolbar import DebugToolbarExtension
 from flask_login import LoginManager
 from flask_migrate import Migrate
 from flask_script import Manager
@@ -22,24 +23,21 @@ def create_logger(log_config=dict()):
 
 
 def create_app(debug=False, config_name='production'):
-    app = Flask(__name__)
+    app = Flask(__name__, instance_relative_config=True)
+
+    # Loading config
     app.config.from_object(app_config[config_name])
+    app.config.from_pyfile('config.py')
+    # app.config.from_envvar('FLASK_CONFIG_FILE')
     app.static_folder = os.path.join(BASE_DIR, app.config.get('STATIC_FOLDER', 'static'))
     app.template_folder = os.path.join(BASE_DIR, app.config.get('TEMPLATE_FOLDER', 'templates'))
-
-    # Session(app)
-
-    db = SQLAlchemy(app)
-    db.create_all()
 
     log_config = app.config.get("LOG", dict())
     app.logger.addHandler(create_logger(log_config))
 
-    migrate = Migrate(app, db)
-
     # from execom import models
 
-    return app, db
+    return app
 
 
 import os
@@ -47,14 +45,22 @@ import os
 
 debug = os.environ.get('FLASK_DEBUG', False)
 config_name = os.environ.get('FLASK_CONFIG', 'production')
-app, db = create_app(config_name=config_name)
-manager = Manager(app)
+app = create_app(config_name=config_name)
+
+toolbar = DebugToolbarExtension(app)
+
 login_manager = LoginManager(app)
 login_manager.login_view = 'login'
 
+manager = Manager(app)
 
-from views import *
+db = SQLAlchemy(app)
+db.create_all()
+
+migrate = Migrate(app, db)
+
+# Session(app)
+
+
+from app.views import *
 from blog.views import *
-# from execom.commands import *
-# from execom.views import *
-# from case.views import *
