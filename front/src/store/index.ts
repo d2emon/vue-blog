@@ -4,6 +4,8 @@ import { RootState } from './types';
 import getters from './getters';
 import mutations from './mutations';
 import actions from './actions';
+// Modules
+import auth from './auth';
 
 Vue.use(Vuex);
 
@@ -61,9 +63,6 @@ const state: RootState = {
   ],
   itemsOnPage: 11,
   page: 1,
-  user: localStorage.getItem('token')
-    ? { token: localStorage.getItem('token') }
-    : undefined,
 };
 
 const store: StoreOptions<RootState> = {
@@ -71,6 +70,9 @@ const store: StoreOptions<RootState> = {
   getters,
   mutations,
   actions,
+  modules: {
+    auth,
+  },
 };
 
 export default new Vuex.Store<RootState>(store);
