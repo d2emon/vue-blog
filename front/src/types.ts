@@ -5,7 +5,12 @@ export interface Article {
   category?: string,
   img?: string,
   prominent?: boolean,
+  createdAt: string,
   layout?: number,
+  tags?: [],
+  views: number,
+  comments?: [],
+  commentsCount?: number,
 }
 
 export interface ArticleQuery {
@@ -61,3 +66,9 @@ export interface Tag {
 }
 
 export type MenuLink = Category | Link;
+
+export interface LoginRequest {
+  username: string,
+  password: string,
+  remember_me?: boolean,
+}
